@@ -1,0 +1,80 @@
+---
+title: "Fluctuation du taux de change"
+author: "Marie Huguese-lie Marlie FRANÇOIS"
+date: "12/17/2021"
+output: html_document
+---
+
+**Corrélation entre la fluctuation du taux de change et le taux d'inflation ainsi que le PIB**
+
+**Problématique**
+   
+    Une définition classique que l'on rapporte souvent au taux de change est celle expliquant que le taux de change est le prix d'une monnaie par rapport à une autre. Il en existe deux types : le taux de change côté au certain et celui côté à l'incertain. Le taux de change côté au certain est la quantité de devise pour une unité de monnaie nationale. Celui côté à l'incertain est la quantité de monnaie nationale pour une unité de devise. En Haïti, le taux existant est le taux de change côté à l'incertain. 
+    
+    Depuis 1995, nous constatons que le taux de change présente une tendance à la hausse.PLusieurs études ont été réalisées en vue de connaitre les causes de la fluctuation de change, certains parlent de la politique monétaire, du PIB, de la balance commerciale, pour ne citer que cela. 
+    
+    Dans notre travail, nous allons considérer deux variables à savoir : le PIB et le taux d'inflation. Considérant l'évolution du taux de change en Haïti, il s'avère important de se questionner sur la relation linéaire qui pourrait exister entre la fluctuation du taux de change et le PIB ainsi que le taux d'inflation entre 1995 à 2005. Est il possible de manipuler le PIB ou le taux d'inflation pour influencer le taux de change ? 
+    
+    À partir des différents outils que nous allons utiliser et les recherches que nous avons effectuées, nous allons pouvoir déduire une hypothèse pour sur  l'existance ou non d'une relation linéaire entre la fluctuation du taux de change, le PIB et le taux d'inflation. .
+    
+    Nous constatons continuellement les impacts de la fluctuation du taux de change sur l'économie haïtienne.
+    
+    Graphe 1.
+```{r}
+library(tidyverse)
+library(readxl)
+
+Data <- read_excel("C:/Users/Admin/Desktop/UNIQ-Cours/Logiciel R/Données devoir.xlsx")
+View(Data)
+
+barplot(Data$`Taux change`, names = Data$Année, xlab="Année", ylab= "Taux de change", main = "Évolution du taux de change", col = c(2, 7))
+
+```
+    
+    Ce graphique montre l'évolution du taux de change de 2015 à 2020, tenant compte de la fluctuation du taux de change, nous avons uniquement considéré le dernier taux de change de l'exercice fiscal à savoir celui du mois de septembre de l'année en question. À partir de cela nous pouvons remarquer que le taux de change le plus élevé a été enregistré en 2019 et celui le moins élevé en 2015.
+    
+    Le taux d'inflation correspond au pourcentage de hausse/baisse des prix des biens et services sur une période donnée. Parrallèlement au taux de change, nous allons présenter l'évolution du taux d'inflation de 2015 à 2020.
+    
+```{r}
+dotchart(Data$`Année`, labels =Data$`Taux d'inflation`, color = "red", main = "Évolution du taux d'inflation", pch = 16)
+
+```
+    
+
+    En effet, à partir de ce graphe, nous pouvons constater que le taux d'inflation a une tendance à la hausse entre 2015 à 2020. Le taux le plus élevé a été enregistré en 2020, contrairement aux taux de change dont le plus élevé a été enregistré en 2019 et celui le plus faible en 2015, pareillement au taux de change.
+    
+    La dernière variable à considérer est le PIB per capita. Cette dernière se définit comme étant la valeur du PIB divisée par le nombre d'habitants du pays considéré. Plus il augmente, plus il est au profit du pays en question. Donc, le PIB pour sa part est une mesure générale de l’activité économique d’un pays fondée sur la valeur marchande totale de tous les biens et services que ce pays produit dans une période de temps donné. Dans le graphe qui suit, nous allons observer l'évolution du PIB per capita.
+```{r}
+pie(Data$`PIB per capita`, label = Data$Année, col=rainbow(9), main = "Évolution du PIB per capita")
+```
+    
+    À partir de ce graphe, nous pouvons constater que c'est en 2020 que nous avons eu le PIB per capita le plus faible, et en 2018, nous avons enregistré le plus élevé.
+    
+    Pour continuer notre travail, nous alons analyser nos variables pour voir s'il y a une relation linéaire entre elles, tel est l'objectif de la régression linéaire. 
+    
+    *Régression linéaire simple entre le taux de change et le PIB per capita*
+    
+```{r}
+Modèle<-lm(formula=Data$`PIB per capita` ~ Data$`Taux change`)
+summary(Modèle)
+confint.default(Modèle)
+```
+    
+    À partir de cette régression, nous pouvons constater que la pente est négative, c'est-à-dire que le PIB per capita ne dépend pas de la fluctuation du taux de change. Et le P-Value étant de -0.48, inférieur à 0.05, cela sous-entend que le test est significatif. Donc il n'existe pas de relation linéaire entre le taux de change et le PIB per capita. Et l'intervalle de confiance confirme cette affirmation car sa borne inférieure est imférieure à 0.
+    
+    *Régression linéaire simple entre le taux de change et le PIB per capita*
+    
+```{r}
+Modèle<-lm(formula=Data$`Taux d'inflation` ~ Data$`Taux change`)
+summary(Modèle)
+confint.default(Modèle)
+```
+   
+    Cette régression montre que pendant ces 5 années montre que le taux d'inflation ne peut pas être évalué en fonction du taux de change, car la pente étant de -0.06053, sa valeur négative sous-entend qu'il n'y a pas eu de relation linéaire entre le taux de change et le taux d'inflation durant ces 5 années.Le P-value étant négatif, et la borne inférieur de l'intervalle de confiance étant inférieure à 0, ceci confirme notre hypothèse.
+
+    Tout compte fait, nous pouvons déduire que de 1995 à 2005, le PIB per capita, le taux d'inflation et le taux de change ne présente pas de relation linéaire, elles ont donc été des variables indépendantes.
+    
+    **Webographie**
+www.brh.ht
+www.centralcharts.com
+
